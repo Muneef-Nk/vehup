@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vehup/core/color/color_contansts.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String hintText;
   final String label;
   final String prefixImage;
@@ -19,6 +19,13 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  _CustomTextFieldState createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool _isPasswordVisible = false;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -27,7 +34,7 @@ class CustomTextField extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                label,
+                widget.label,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -37,29 +44,36 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         TextField(
-          controller: controller,
-          obscureText: isPassword,
+          controller: widget.controller,
+          obscureText: widget.isPassword ? !_isPasswordVisible : false,
           decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+            hintText: widget.hintText,
+            hintStyle:
+                const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
             filled: true,
             fillColor: AppColors.white,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
             prefixIcon: Padding(
               padding: const EdgeInsets.all(15),
-              child: SvgPicture.asset(prefixImage),
+              child: SvgPicture.asset(widget.prefixImage),
             ),
-            suffixIcon: isPassword
+            suffixIcon: widget.isPassword
                 ? GestureDetector(
                     onTap: () {
-                      //
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
                     },
                     child: Padding(
-                      padding: EdgeInsets.all(15),
+                      padding: const EdgeInsets.all(15),
                       child: SvgPicture.asset(
-                        'assets/eye-slash.svg',
+                        _isPasswordVisible
+                            ? 'assets/eye.svg'
+                            : 'assets/eye-slash.svg',
                       ),
-                    ))
+                    ),
+                  )
                 : null,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -74,7 +88,7 @@ class CustomTextField extends StatelessWidget {
               borderSide: BorderSide(color: AppColors.primary, width: 1),
             ),
           ),
-          style: TextStyle(fontSize: 14, color: Colors.black),
+          style: const TextStyle(fontSize: 14, color: Colors.black),
         ),
       ],
     );

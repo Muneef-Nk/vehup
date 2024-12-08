@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:vehup/core/color/color_contansts.dart';
+import 'package:vehup/features/dashboard/controller/dashboard_controller.dart';
+import 'package:vehup/features/total_vehicle/controller/total_vehicle_controller.dart';
 import 'package:vehup/features/total_vehicle/view/total_vehicle_view.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends StatefulWidget {
   DashboardView({super.key});
-  final List<Color> colors = [
-    AppColors.lightBlue,
-    AppColors.brightGreen,
-    AppColors.brightRed,
-    AppColors.deepBlue,
-  ];
-  final List icons = [
-    "assets/car1.svg",
-    "assets/Group.svg",
-    "assets/fi_493808.svg",
-    "assets/fi_2155941.svg",
-  ];
+
+  @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<DashboardView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TotalVehicleController>(context, listen: false)
+          .getTotalVehicles(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,28 +29,29 @@ class DashboardView extends StatelessWidget {
       appBar: _buildAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
-            childAspectRatio: 1.0,
-          ),
-          itemCount: 4,
-          itemBuilder: (context, index) {
-            return _buildGridItem(
-              iconBackground: colors[index],
-              count: "35",
-              text: "Item fsdfjsdf",
-              icon: icons[index],
-              onPressed: () {
-                print('clicked');
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => TotalVehicleView()));
-              },
-            );
-          },
-        ),
+        child: Consumer<DashboardController>(builder: (context, provider, _) {
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+              childAspectRatio: 1.0,
+            ),
+            itemCount: 4,
+            itemBuilder: (context, index) {
+              return _buildGridItem(
+                iconBackground: provider.data[index]['color'],
+                count: provider.data[index]['count'],
+                text: provider.data[index]['name'],
+                icon: provider.data[index]['icon'],
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => TotalVehicleView()));
+                },
+              );
+            },
+          );
+        }),
       ),
     );
   }

@@ -19,8 +19,10 @@ class _TotalVehicleViewState extends State<TotalVehicleView> {
   @override
   void initState() {
     super.initState();
-    Provider.of<TotalVehicleController>(context, listen: false)
-        .getTotalVehicles();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TotalVehicleController>(context, listen: false)
+          .getTotalVehicles(context);
+    });
   }
 
   @override
@@ -248,7 +250,6 @@ class VehicleInfo extends StatelessWidget {
     );
   }
 
-  // Build the row of vehicle details (year, kmDriven, fuel type)
   Widget _buildVehicleDetails(dynamic data) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -260,7 +261,6 @@ class VehicleInfo extends StatelessWidget {
     );
   }
 
-  // Helper function to build each detail item (icon + text)
   Widget _buildDetailItem(String iconPath, String? label) {
     return Row(
       children: [

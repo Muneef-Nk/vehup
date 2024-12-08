@@ -29,14 +29,22 @@ class SelectPreference extends StatelessWidget {
                   context: context,
                   iconPath: 'assets/car.svg',
                   label: 'Car',
-                  onTap: () => _navigateTo(context, CreateRequirement()),
+                  onTap: () => _navigateTo(
+                      context,
+                      CreateRequirement(
+                        vehicleTypeId: 1,
+                      )),
                 ),
                 const SizedBox(width: 16),
                 _buildSelectionCard(
                   context: context,
                   iconPath: 'assets/bike.svg',
                   label: 'Bike',
-                  onTap: () => _navigateTo(context, CreateRequirement()),
+                  onTap: () => _navigateTo(
+                      context,
+                      CreateRequirement(
+                        vehicleTypeId: 2,
+                      )),
                 ),
               ],
             ),
@@ -90,6 +98,7 @@ class SelectPreference extends StatelessWidget {
   }
 
   void _navigateTo(BuildContext context, Widget page) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => page));
   }
 }

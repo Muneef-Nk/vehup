@@ -17,10 +17,10 @@ class _VehicleDetailsViewState extends State<VehicleDetailsView> {
   @override
   void initState() {
     super.initState();
-
+    Provider.of<VehicleDetailsController>(context, listen: false)
+        .getVehicleDetails(ctx: context, id: widget.id);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<VehicleDetailsController>(context, listen: false)
-          .getVehicleDetails(ctx: context, id: widget.id);
+   
     });
   }
 
