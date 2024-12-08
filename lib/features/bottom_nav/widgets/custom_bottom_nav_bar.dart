@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:vehup/core/color/color_contansts.dart';
 import 'package:vehup/features/bottom_nav/controller/bottom_nav_provider.dart';
+import 'package:vehup/features/requirement/view/requirement_view.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar({super.key});
@@ -31,7 +32,6 @@ class CustomBottomNavBar extends StatelessWidget {
             context: context,
             label: 'Sell',
             index: 2,
-            isCenter: true,
           ),
           _buildNavItem(
             context: context,
@@ -55,14 +55,19 @@ class CustomBottomNavBar extends StatelessWidget {
     String? icon,
     required String label,
     required int index,
-    bool isCenter = false,
   }) {
     final currentIndex = context.watch<BottomNavProvider>().currentIndex;
 
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          context.read<BottomNavProvider>().setIndex(index);
+          print(index);
+          if (index == 3) {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => RequirementView()));
+          } else {
+            context.read<BottomNavProvider>().setIndex(index);
+          }
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

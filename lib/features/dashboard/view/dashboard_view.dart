@@ -12,7 +12,7 @@ class DashboardView extends StatelessWidget {
     AppColors.deepBlue,
   ];
   final List icons = [
-    "assets/car.svg",
+    "assets/car1.svg",
     "assets/Group.svg",
     "assets/fi_493808.svg",
     "assets/fi_2155941.svg",

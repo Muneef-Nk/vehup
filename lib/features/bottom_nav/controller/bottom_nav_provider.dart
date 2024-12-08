@@ -13,9 +13,5 @@ class BottomNavProvider extends ChangeNotifier {
 
   final List<Widget> screens = [
     DashboardView(),
-    // SearchScreen(),
-    // AddItemScreen(),
-    // NotificationsScreen(),
-    // ProfileScreen(),
   ];
 }
